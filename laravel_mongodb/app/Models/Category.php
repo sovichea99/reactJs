@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Category extends Model
 {
@@ -11,7 +11,6 @@ class Category extends Model
     protected $collection = 'categories';
     protected $fillable = [
         'name',
-        'description',
     ];
     protected $casts = [
         'created_at' => 'datetime',

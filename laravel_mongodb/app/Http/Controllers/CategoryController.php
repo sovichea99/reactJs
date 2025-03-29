@@ -28,9 +28,8 @@ class CategoryController extends Controller
         try{
             $request->validate([
                 'name' => 'required|string|max:255|unique:categories',
-                'description' => 'nullable|string',
             ]);
-            
+
             $category = Category::create($request->all());
             return response()->json($category, 200);
         }catch(\Illuminate\Database\QueryException $e){
