@@ -62,14 +62,11 @@ return [
             ]) : [],
         ],
         'mongodb' => [
-            'driver' => 'mongodb',
-            'host' => env('MONGODB_HOST', '127.0.0.1'),
-            'port' => env('MONGODB_PORT', 27017),
+            'driver'   => 'mongodb',
+            'dsn'      => env('MONGODB_URI'),  // This line connects MongoDB using URI from .env
             'database' => env('MONGODB_DATABASE', 'laravel_app'),
-            'username' => env('MONGODB_USERNAME', ''),
-            'password' => env('MONGODB_PASSWORD', ''),
-            'options' => [
-                'database' => 'admin', // Default authentication database
+            'options'  => [
+                'database' => 'admin',  // Default authentication database
             ],
         ],
         'mariadb' => [
