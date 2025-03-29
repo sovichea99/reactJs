@@ -43,8 +43,6 @@ const App = () => {
             
             <Route path="/login" element={<Login />} />
           </Routes>
-          
-        <Login /> {/* Login Page */}
       </Router>
     </CartProvider>
   );
