@@ -26,11 +26,12 @@ Route::prefix('admin')->group(function () {
 
 // ✅ Add Product Routes for Testing
 Route::prefix('products')->group(function () {
-    Route::get('/', [ProductsController::class, 'index']);  // List all products
-    Route::post('/store', [ProductsController::class, 'store'])->middleware('auth:admin'); // Add product
-    Route::get('/{id}', [ProductsController::class, 'show']); // View product
-    Route::put('/update/{id}', [ProductsController::class, 'update'])->middleware('auth:admin'); // Update product
-    Route::delete('/delete/{id}', [ProductsController::class, 'destroy'])->middleware('auth:admin'); // Delete product
+    Route::get('/', [ProductsController::class, 'index']);
+    Route::post('/', [ProductsController::class, 'store'])->middleware('auth:admin');
+    Route::get('/{id}', [ProductsController::class, 'show']);
+    // Use match to handle both PUT and PATCH
+    Route::post('/{id}', [ProductsController::class, 'update'])->middleware('auth:admin');
+    Route::delete('/{id}', [ProductsController::class, 'destroy'])->middleware('auth:admin');
 });
 
 // ✅ Add new categories for the website

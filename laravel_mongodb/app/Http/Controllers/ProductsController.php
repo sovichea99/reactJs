@@ -6,6 +6,7 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use MongoDB\BSON\ObjectId;
 
 class ProductsController extends Controller
 {
@@ -48,10 +49,9 @@ class ProductsController extends Controller
         }
     }
 
-
     public function show(string $id)
     {
-        // Find the product by its ID
+        // Find the product by its ID (MongoDB handles this well even with string _id)
         $product = Products::where('_id', $id)->first();
 
         if (!$product) {
@@ -67,15 +67,16 @@ class ProductsController extends Controller
     {
         try {
             // Find the product by its ID
-            $product = Products::findOrFail($id);
+            $product = Products::findOrFail($id);  // This works fine with string _id
 
-            // Validate input data
+            // Validate input data, marking some fields as optional (sometimes)
             $validated = $request->validate([
-                'name' => 'sometimes|string|max:255',
+                'name' => 'sometimes|string|max:255|unique:mongodb.products,name,' . $id . ',_id',
+                'description' => 'nullable|string',
                 'price' => 'sometimes|numeric|min:0',
                 'stock' => 'sometimes|integer|min:0',
                 'category' => 'nullable|string',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048', // Changed to 'sometimes'
             ]);
 
             // Handle image update if a new image is uploaded
@@ -85,20 +86,22 @@ class ProductsController extends Controller
                     Storage::disk('public')->delete($product->image);
                 }
 
-                // Store the new image and update the image path
+                // Store the new image
                 $imagePath = $request->file('image')->store('products', 'public');
                 $validated['image'] = $imagePath;
+                $validated['image_url'] = asset('storage/' . $imagePath);
             }
 
             // Update the product with the validated data
             $product->update($validated);
 
-            return response()->json($product);  // Return the updated product
+            // Return the updated product data
+            return response()->json($product->fresh()); // fresh() ensures that we return the updated model
         } catch (ValidationException $e) {
-            // If validation fails, return the validation error messages
-            return response()->json([
-                'error' => $e->errors()
-            ], 422);
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Handle any other potential errors (e.g., database issues)
+            return response()->json(['error' => 'Something went wrong.'], 500);
         }
     }
 

@@ -1,5 +1,7 @@
+// src/components/Products.jsx
 import { useEffect, useState } from 'react';
 import api from '../services/api';
+import EditProductForm from './EditProductForm';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -16,15 +18,31 @@ export default function Products() {
     setEditingProduct(product);
   };
 
-  const handleUpdate = async (updatedProduct) => {
+  const handleUpdate = async (updatedProduct, imageFile) => {
     if (!updatedProduct._id) {
       console.error('Product ID is missing!');
       return;
     }
 
     try {
+      // Prepare data for the backend
+      const formData = new FormData();
+      formData.append('_id', updatedProduct._id);
+      formData.append('name', updatedProduct.name);
+      formData.append('price', updatedProduct.price);
+      formData.append('stock', updatedProduct.stock);
+      formData.append('category', updatedProduct.category);
+
+      // Append the image file if it exists
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+
       console.log('Updating product:', updatedProduct);
-      const response = await api.put(`/products/${updatedProduct._id}`, updatedProduct);
+
+      const response = await api.post(`/products/${updatedProduct._id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' } // Set the content type for form data
+      });
       console.log('Updated response:', response.data);
 
       // Update the product in the state with the new data
@@ -44,7 +62,7 @@ export default function Products() {
         {products.map((product) => (
           <div key={product._id} className="border rounded-lg p-4">
             <img 
-              src={product.image} 
+              src={product.image_url} 
               alt={product.name} 
               className="w-full h-48 object-cover mb-4"
             />
@@ -65,92 +83,12 @@ export default function Products() {
 
       {/* Edit Product Modal */}
       {editingProduct && (
-        <EditProductForm 
+        <EditProductForm
           product={editingProduct} 
           onUpdate={handleUpdate} 
           onCancel={() => setEditingProduct(null)} 
         />
       )}
-    </div>
-  );
-}
-
-function EditProductForm({ product, onUpdate, onCancel }) {
-  const [updatedProduct, setUpdatedProduct] = useState({ ...product });
-
-  // Log the updated product to check if it has _id
-  console.log('Editing product in form:', updatedProduct);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedProduct((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!updatedProduct._id) {
-      console.error('Product ID is missing!');
-      return;
-    }
-
-    console.log('Form submitted with product:', updatedProduct);
-    onUpdate(updatedProduct); // Pass the updated product to the handler
-  };
-
-  return (
-    <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
-      <div className="modal-content bg-white p-6 rounded shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">Name</label>
-            <input 
-              type="text" 
-              name="name" 
-              value={updatedProduct.name} 
-              onChange={handleChange} 
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">Price</label>
-            <input 
-              type="number" 
-              name="price" 
-              value={updatedProduct.price} 
-              onChange={handleChange} 
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">Stock</label>
-            <input 
-              type="number" 
-              name="stock" 
-              value={updatedProduct.stock} 
-              onChange={handleChange} 
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2">Category</label>
-            <input 
-              type="text" 
-              name="category" 
-              value={updatedProduct.category} 
-              onChange={handleChange} 
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="flex justify-between">
-            <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Update</button>
-            <button type="button" onClick={onCancel} className="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
-          </div>
-        </form>
-      </div>
     </div>
   );
 }

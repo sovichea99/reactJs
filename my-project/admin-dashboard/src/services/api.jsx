@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
   headers: {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    // We'll remove 'Content-Type' from the default headers because axios will automatically set it for multipart/form-data
   }
 });
 
@@ -14,6 +14,12 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
+  // If the request contains form data, don't set Content-Type manually
+  if (config.headers['Content-Type'] === 'multipart/form-data') {
+    delete config.headers['Content-Type'];
+  }
+
   return config;
 });
 
