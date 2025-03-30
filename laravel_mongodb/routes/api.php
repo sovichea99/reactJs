@@ -36,7 +36,7 @@ Route::prefix('products')->group(function () {
 // ✅ Add new categories for the website
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']); // List all categories
-    Route::post('/', [CategoryController::class, 'store'])->middleware('auth:admin'); // Add category 
+    Route::post('/', [CategoryController::class, 'store'])->middleware('auth:admin'); // Add category
     Route::post('/{id}', [CategoryController::class, 'update'])->middleware('auth:admin'); // Update category
     Route::delete('/{id}', [CategoryController::class, 'destroy'])->middleware('auth:admin'); // Delete category
 });

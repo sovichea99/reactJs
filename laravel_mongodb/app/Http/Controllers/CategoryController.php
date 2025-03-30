@@ -37,7 +37,10 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return response()->json($category, 200);
+            return response()->json([
+                'message'=>'Category updated successfully',
+                'category'=>$category,
+            ],200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'error' => 'Category creation failed',
@@ -74,7 +77,10 @@ class CategoryController extends Controller
 
             $category->save();
 
-            return response()->json($category, 200);
+            return response()->json([
+                'message'=>'Category updated successfully',
+                'category'=>$category,
+            ],200);
 
         }catch(\Illuminate\Database\QueryException $e){
             return response()->json([
