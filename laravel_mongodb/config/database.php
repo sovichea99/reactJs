@@ -62,16 +62,15 @@ return [
             ]) : [],
         ],
         'mongodb' => [
-            'driver' => 'mongodb',
-            'host' => env('MONGODB_HOST', '127.0.0.1'),
-            'port' => env('MONGODB_PORT', 27017),
+            'driver'   => 'mongodb',
+            'dsn'      => env('MONGODB_URI'),  // This line connects MongoDB using URI from .env
             'database' => env('MONGODB_DATABASE', 'laravel_app'),
-            'username' => env('MONGODB_USERNAME', ''),
-            'password' => env('MONGODB_PASSWORD', ''),
-            'options' => [
-                'database' => 'admin', // Default authentication database
+            'options'  => [
+                'database' => 'admin',  // Default authentication database
             ],
         ],
+
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
@@ -157,7 +156,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
