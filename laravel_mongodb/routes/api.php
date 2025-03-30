@@ -33,7 +33,7 @@ Route::prefix('products')->group(function () {
     Route::delete('/delete/{id}', [ProductsController::class, 'destroy'])->middleware('auth:admin'); // Delete product
 });
 
-// Add new categories for the website
+// ✅ Add new categories for the website
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']); // List all categories
     Route::post('/', [CategoryController::class, 'store'])->middleware('auth:admin'); // Add category 
