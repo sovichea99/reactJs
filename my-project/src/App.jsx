@@ -10,16 +10,21 @@ import PaymentPage from "./Components/Navbar/PaymentPage"; // Payment Page
 import AboutUs from "./Components/Navbar/AboutUs"; // About Us Page
 import Dashboard from "./Components/Navbar/Dashboard"; // Dashboard Page
 import Login from "./Components/Auth/Login"; // Login Page
+import Register from "./Components/Auth/Register"; // Register Page
+
 const Layout = () => {
   const location = useLocation();
+  const hideNavbar = ["/login", "/register"];
+
 
   return (
     <div className="overflow-x-hidden">
-      {location.pathname !== "/login" && <Navbars />}
+      {!hideNavbar.includes(location.pathname) && <Navbars />}
       <Outlet />
     </div>
   );
 };
+
 const App = () => {
   return (
     <CartProvider>
@@ -27,21 +32,22 @@ const App = () => {
       <Router>
           <Routes>
             <Route element={<Layout />}> {/* Layout for all pages */}
-            {/* Define Routes for all pages */}
-            <Route path="/" element={<Homes />} /> {/* Home Page */}
-            <Route path="/products" element={<Products />} />{" "}
-            {/* Products Listing */}
-            <Route path="/product/:id" element={<ProductDetail />} />{" "}
-            {/* Single Product Details */}
-            <Route path="/cart" element={<AddToCart />} /> {/* Shopping Cart */}
-            <Route path="/payment" element={<PaymentPage />} />{" "}
-            {/* Payment Page */}
-            <Route path="/about" element={<AboutUs />} /> {/* About Us */}
-            <Route path="/dashboard" element={<Dashboard />} />{" "}
-            {/* Dashboard */}
+              {/* Define Routes for all pages */}
+              <Route path="/" element={<Homes />} /> {/* Home Page */}
+              <Route path="/products" element={<Products />} />{" "}
+              {/* Products Listing */}
+              <Route path="/product/:id" element={<ProductDetail />} />{" "}
+              {/* Single Product Details */}
+              <Route path="/cart" element={<AddToCart />} /> {/* Shopping Cart */}
+              <Route path="/payment" element={<PaymentPage />} />{" "}
+              {/* Payment Page */}
+              <Route path="/about" element={<AboutUs />} /> {/* About Us */}
+              <Route path="/dashboard" element={<Dashboard />} />{" "}
+              {/* Dashboard */}
             </Route>
             
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
       </Router>
     </CartProvider>

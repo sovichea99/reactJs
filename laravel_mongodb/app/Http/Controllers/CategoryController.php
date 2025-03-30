@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         // Fetch all categories from the database
         $categories = Category::all();
 
@@ -16,30 +17,93 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
-    public function store(Request $request){
-        // Validate the incoming request data
-        // $request->validate([
-        //     'name' => 'required|string|max:255|unique:categories',
-        //     'description' => 'nullable|string',
-        // ]);
+    public function store(Request $request)
+    {
 
-        // Create a new category in the database
-        // $category = Category::create($request->all());
-        try{
+        try {
             $request->validate([
-                'name' => 'required|string|max:255|unique:categories',
+                'name' => 'required|string|max:255',
             ]);
 
-            $category = Category::create($request->all());
+            if (Category::where('name',$request->name)->exists()) {
+                return response()->json([
+                    'error' => 'Category already exists'
+                ], 422);
+            }
+
+            $category = Category::create([
+                'name' => $request->name,
+            ]);
+
+            $category->save();
+
             return response()->json($category, 200);
-        }catch(\Illuminate\Database\QueryException $e){
+        } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'error' => 'Category creation failed',
                 'message' => $e->getMessage()
             ], 422);
-        }catch(\Illuminate\Validation\ValidationException $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'error' => $e->errors()
+            ], 422);
+        }
+    }
+
+    public function update(Request $request, $id){
+        try{
+            $category = Category::find($id);
+
+            if(!$category){
+                return response()->json([
+                    'error' => 'Category not found',
+                ], 404);
+            }
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+            if (Category::where('name', $request->name)->exists()) {
+                return response()->json([
+                    'error' => 'Category already exists'
+                ], 422);
+            }
+
+            $category->name = $request->name;
+
+            $category->save();
+
+            return response()->json($category, 200);
+
+        }catch(\Illuminate\Database\QueryException $e){
+            return response()->json([
+                'error' => 'Category update failed',
+                'message' => $e->getMessage()
+            ], 422);
+        }
+    }
+
+    public function destroy($id){
+        try{
+            $category = Category::find($id);
+
+            if(!$category){
+                return response()->json([
+                    'error' => 'Category not found',
+                ], 404);
+            }
+
+            $category->delete();
+
+            return response()->json([
+                'message' => 'Category deleted successfully'
+            ], 200);
+
+        }catch(\Illuminate\Database\QueryException $e){
+            return response()->json([
+                'error' => 'Category deletion failed',
+                'message' => $e->getMessage()
             ], 422);
         }
     }
