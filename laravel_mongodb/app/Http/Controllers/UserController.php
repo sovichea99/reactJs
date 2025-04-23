@@ -63,7 +63,8 @@ class UserController extends Controller
     }
     //return all user for admin
     public function index(){
-        return response()->json(User::all());
+        $users = User::all();
+        return response()->json($users);
     }
 
 }

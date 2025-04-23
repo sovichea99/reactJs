@@ -7,15 +7,20 @@ export default function Customers() {
 
   // Example static data - replace with API call
   useEffect(() => {
-    // api.get('/customers').then(response => setCustomers(response.data))
-   api.get('/customers')
-      .then(response => {
-        setCustomers(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching customers:', error);
-      });
+    api.get('/users', {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`
+      }
+    })
+    .then(response => {
+      console.log('Users:', response.data); // Log the response to check
+      setCustomers(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching users:', error);
+    });
   }, []);
+  
 
   return (
     <div className="bg-white rounded-lg shadow p-6">

@@ -44,7 +44,6 @@ Route::prefix('categories')->group(function () {
 
 //Access all user
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/customers', [UserController::class, 'index']);
-    Route::post('logout', [AdminController::class, 'logout']);
+    Route::get('/users', [UserController::class, 'index']);
 });
 
