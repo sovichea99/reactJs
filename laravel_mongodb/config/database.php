@@ -61,6 +61,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+
         'mongodb' => [
             'driver'   => 'mongodb',
             'dsn'      => env('MONGODB_URI'),  // This line connects MongoDB using URI from .env
@@ -69,7 +70,6 @@ return [
                 'database' => 'admin',  // Default authentication database
             ],
         ],
-
 
         'mariadb' => [
             'driver' => 'mariadb',
