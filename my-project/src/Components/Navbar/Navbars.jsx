@@ -1,12 +1,13 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { IoIosHome, IoIosArrowDown } from "react-icons/io";
 import { MdMenu, MdOutlineShoppingCart } from "react-icons/md";
-import { FiUser } from "react-icons/fi";
+import { FiUser,  FiSettings, FiLogOut, FiUserPlus  } from "react-icons/fi";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../../Contexts/CartContext";
 import { motion } from "framer-motion";
 import { getCurrentUser } from "../../Service/Auth"; // Adjust the import path as necessary
+
 
 const NavbarMenu = [
   { id: 1, title: "Home", link: "/" },
@@ -45,10 +46,10 @@ const Navbars = () => {
   }, []);
 
   const profileMenu = [
-    { title: "My Profile", link: "/profile" },
-    { title: "Orders", link: "/orders" },
-    { title: "Settings", link: "/settings" },
-      user ? {title: "Logout", link: "/login" } : {title: "Register", link: "/register" },
+    { title: "My Profile", link: "/profile", icon: <FiUser /> },
+    { title: "Orders", link: "/orders" , icon: <MdOutlineShoppingCart/>},
+    { title: "Settings", link: "/settings", icon: <FiSettings /> },
+      user && user.email ? {title: "Logout", link: "/login", icon: <FiLogOut/> } : {title: "Register", link: "/register", icon: <FiUserPlus/> },
   ];
 
   return (
@@ -138,7 +139,12 @@ const Navbars = () => {
                           setShowProfileDropdown(false);
                         }}
                       >
-                        {item.title}
+                        <div>
+                          {/* {item.icon} 
+                          {item.title} */}
+                          <span className="text-base flex items-center">{item.icon}</span>
+                          <span>{item.title}</span>
+                        </div>
                       </a>
                     ))}
                   </motion.div>
