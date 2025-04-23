@@ -64,7 +64,7 @@ return [
         'mongodb' => [
             'driver'   => 'mongodb',
             'dsn'      => env('MONGODB_URI'),  // This line connects MongoDB using URI from .env
-            'database' => env('MONGODB_DATABASE', 'laravel_app'),
+            'database' => env('MONGODB_DATABASE', 'laravel_db'),
             'options'  => [
                 'database' => 'admin',  // Default authentication database
             ],
