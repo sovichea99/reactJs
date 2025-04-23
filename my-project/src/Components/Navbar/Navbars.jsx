@@ -139,7 +139,7 @@ const Navbars = () => {
                           setShowProfileDropdown(false);
                         }}
                       >
-                        <div>
+                        <div className="flex items-center gap-1">
                           {/* {item.icon} 
                           {item.title} */}
                           <span className="text-base flex items-center">{item.icon}</span>
