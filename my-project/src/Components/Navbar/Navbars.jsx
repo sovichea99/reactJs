@@ -48,7 +48,7 @@ const Navbars = () => {
     { title: "My Profile", link: "/profile" },
     { title: "Orders", link: "/orders" },
     { title: "Settings", link: "/settings" },
-    { title: "Logout", link: "/login" },
+      user ? {title: "Logout", link: "/login" } : {title: "Register", link: "/register" },
   ];
 
   return (
