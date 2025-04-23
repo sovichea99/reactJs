@@ -8,10 +8,13 @@ export default function Customers() {
   // Example static data - replace with API call
   useEffect(() => {
     // api.get('/customers').then(response => setCustomers(response.data))
-    setCustomers([
-      { id: 1, name: 'John Doe', email: 'john@example.com', phone: '555-1234', orders: 3 },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '555-5678', orders: 5 }
-    ]);
+   api.get('/customers')
+      .then(response => {
+        setCustomers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching customers:', error);
+      });
   }, []);
 
   return (

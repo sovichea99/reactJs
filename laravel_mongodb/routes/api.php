@@ -24,7 +24,7 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// ✅ Add Product Routes for Testing
+//Add Product Routes for Testing
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductsController::class, 'index']);
     Route::post('/', [ProductsController::class, 'store'])->middleware('auth:admin');
@@ -34,10 +34,17 @@ Route::prefix('products')->group(function () {
     Route::delete('/{id}', [ProductsController::class, 'destroy'])->middleware('auth:admin');
 });
 
-// ✅ Add new categories for the website
+//Add new categories for the website
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']); // List all categories
     Route::post('/', [CategoryController::class, 'store'])->middleware('auth:admin'); // Add category
     Route::post('/{id}', [CategoryController::class, 'update'])->middleware('auth:admin'); // Update category
     Route::delete('/{id}', [CategoryController::class, 'destroy'])->middleware('auth:admin'); // Delete category
 });
+
+//Access all user
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/customers', [UserController::class, 'index']);
+    Route::post('logout', [AdminController::class, 'logout']);
+});
+
