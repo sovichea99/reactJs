@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosHome } from "react-icons/io";
 const Register = () => {
 
@@ -89,6 +89,12 @@ const Register = () => {
             >
               Register
             </button>
+            <p className="text-center text-gray-600 mt-4">
+              Already have an account?{" "}
+              <Link to="/login" className="text-green-600 hover:underline">
+                Login
+              </Link>
+            </p>
           </form>
         </div>
       </div>
