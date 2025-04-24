@@ -1,13 +1,12 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { IoIosHome, IoIosArrowDown } from "react-icons/io";
 import { MdMenu, MdOutlineShoppingCart } from "react-icons/md";
-import { FiUser,  FiSettings, FiLogOut, FiUserPlus  } from "react-icons/fi";
+import { FiUser, FiSettings, FiLogOut, FiUserPlus } from "react-icons/fi";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../../Contexts/CartContext";
 import { motion } from "framer-motion";
 import { getCurrentUser } from "../../Service/Auth"; // Adjust the import path as necessary
-
 
 const NavbarMenu = [
   { id: 1, title: "Home", link: "/" },
@@ -15,7 +14,6 @@ const NavbarMenu = [
   { id: 3, title: "About", link: "/about" },
   { id: 4, title: "Contacts", link: "#" },
 ];
-
 
 const Navbars = () => {
   const [open, setOpen] = useState(false);
@@ -47,9 +45,11 @@ const Navbars = () => {
 
   const profileMenu = [
     { title: "My Profile", link: "/profile", icon: <FiUser /> },
-    { title: "Orders", link: "/orders" , icon: <MdOutlineShoppingCart/>},
+    { title: "Orders", link: "/orders", icon: <MdOutlineShoppingCart /> },
     { title: "Settings", link: "/settings", icon: <FiSettings /> },
-      user && user.email ? {title: "Logout", link: "/login", icon: <FiLogOut/> } : {title: "Register", link: "/register", icon: <FiUserPlus/> },
+    user && user.email
+      ? { title: "Logout", link: "/login", icon: <FiLogOut /> }
+      : { title: "Register", link: "/register", icon: <FiUserPlus /> },
   ];
 
   return (
@@ -123,10 +123,25 @@ const Navbars = () => {
                     className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-100"
                   >
                     <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-800">
-                       {}{user ? user.name : "Guest"}
-                      </p>
-                      <p className="text-xs text-gray-500">{user?.email || "Guest account"}</p>
+                      <div className="flex items-center gap-2">
+                        <div className="">
+                          <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center relative">
+                            {/* Replace with user image if available */}
+                            <FiUser className="text-xl text-green-700" />
+                            {/* Alternatively show user initials */}
+                            {/* <span className="font-semibold text-green-700">JD</span> */}
+                          </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-sm font-medium text-gray-800">
+                            {}
+                            {user ? user.name : "Guest"}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {user?.email || "Guest account"}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                     {profileMenu.map((item, index) => (
                       <a
@@ -139,7 +154,7 @@ const Navbars = () => {
                           setShowProfileDropdown(false);
                         }}
                       >
-                        <div className="flex items-center gap-1">
+                        <div>
                           {/* {item.icon} 
                           {item.title} */}
                           <span className="text-base flex items-center">{item.icon}</span>
