@@ -1,43 +1,36 @@
-// src/components/EditProductForm.jsx
 import { useState } from "react";
 
-export default function EditProductForm({ product, onUpdate, onCancel }) {
-  const [updatedProduct, setUpdatedProduct] = useState({ ...product });
-  const [imageFile, setImageFile] = useState(null);
-
-  // Log the updated product to check if it has _id
-  console.log("Editing product in form:", updatedProduct);
+export default function AddProductForm({ onAdd, onCancel }) {
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    price: '',
+    stock: '',
+    category: '',
+  });
+  const [image_url, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedProduct((prev) => ({
+    setNewProduct((prev) => ({
       ...prev,
       [name]: value,
-      image_url: imageFile ? URL.createObjectURL(imageFile) : product.image_url,
     }));
   };
+
+
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!updatedProduct._id) {
-      console.error("Product ID is missing!");
-      return;
-    }
-
-    console.log("Form submitted with product:", updatedProduct);
-    onUpdate(updatedProduct, imageFile); // Pass the updated product to the handler
+    onAdd(newProduct, image_url);
   };
 
   return (
     <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
       <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px]">
-        {" "}
-        {/* Changed from w-96 to w-80 and padding */}
-        <h2 className="text-xl font-bold mb-3">Edit Product</h2>{" "}
-        {/* Smaller title */}
+        <h2 className="text-xl font-bold mb-3">Add Product</h2>
         <form onSubmit={handleSubmit}>
           {/* Row 1: Name + Price */}
           <div className="flex gap-2 mb-3">
@@ -46,7 +39,7 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               <input
                 type="text"
                 name="name"
-                value={updatedProduct.name}
+                value={newProduct.name}
                 onChange={handleChange}
                 className="w-full p-1.5 text-sm border rounded"
               />
@@ -56,7 +49,7 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               <input
                 type="number"
                 name="price"
-                value={updatedProduct.price}
+                value={newProduct.price}
                 onChange={handleChange}
                 className="w-full p-1.5 text-sm border rounded"
               />
@@ -70,7 +63,7 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               <input
                 type="number"
                 name="stock"
-                value={updatedProduct.stock}
+                value={newProduct.stock}
                 onChange={handleChange}
                 className="w-full p-1.5 text-sm border rounded"
               />
@@ -80,7 +73,7 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               <input
                 type="text"
                 name="category"
-                value={updatedProduct.category}
+                value={newProduct.category}
                 onChange={handleChange}
                 className="w-full p-1.5 text-sm border rounded"
               />
@@ -95,18 +88,11 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               onChange={handleImageChange}
               className="w-full text-sm"
             />
-            {updatedProduct.image_url && !imageFile && (
+            {image_url && (
               <img
-                src={updatedProduct.image_url}
-                alt={updatedProduct.name}
-                className="w-full h-[300px]  mt-5 rounded"
-              />
-            )}
-            {imageFile && (
-              <img
-                src={URL.createObjectURL(imageFile)}
+                src={URL.createObjectURL(image_url)}
                 alt="Preview"
-                className="w-full h-32 object-cover mt-2 rounded"
+                className="w-full h-52 object-cover mt-2 rounded"
               />
             )}
           </div>
@@ -117,7 +103,7 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               type="submit"
               className="bg-green-500 text-white text-sm px-3 py-1.5 rounded"
             >
-              Update
+              Add Now
             </button>
             <button
               type="button"

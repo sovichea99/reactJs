@@ -15,7 +15,7 @@ const Menu = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://fakestoreapi.com/products'); // Use the same API as in Products
+        const response = await axios.get('http://127.0.0.1:8000/api/products/'); // Use the same API as in Products
         setProducts(response.data);
         setLoading(false);
       } catch (err) {
@@ -43,7 +43,7 @@ const Menu = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="text-2xl font-bold text-left pb-10 uppercase"
         >
-          Our Menu
+          Our Products
         </motion.h1>
         <div className="grid grid-cols-1 lg:m-auto lg:w-[100%] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-8 md:gap-10 justify-items-center">
           {displayedProducts.map((product) => (
@@ -58,12 +58,12 @@ const Menu = () => {
               <Link to={`/product/${product.id}`}>
                 <motion.div>
                   <img
-                    src={product.image}
-                    alt={product.title}
+                    src={product.image_url}
+                    alt={product.name}
                     className="w-[80px] h-[80px] object-cover -translate-y-6 scale-150 mb-4"
                   />
                   <div className="text-center">
-                    <h1 className="text-lg font-semibold">{product.title}</h1>
+                    <h1 className="text-lg font-semibold">{product.name}</h1>
                     <p className="text-lg font-semibold text-orange-400">${product.price}</p>
                   </div>
                 </motion.div>

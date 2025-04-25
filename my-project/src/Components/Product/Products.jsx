@@ -18,7 +18,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://fakestoreapi.com/products');
+        const response = await axios.get('http://127.0.0.1:8000/api/products/');
         setProducts(response.data);
         setLoading(false);
       } catch (err) {
@@ -76,13 +76,13 @@ const Products = () => {
                 <Link to={`/product/${product.id}`}>
                   <motion.div>
                     <img
-                      src={product.image}
+                      src={product.image_url}
                       alt={product.title}
                       className="w-[80px] h-[80px] object-cover -translate-y-6 scale-150 mb-4"
                     />
 
                     <div className="text-center">
-                      <h1 className="text-lg font-semibold">{product.title}</h1>
+                      <h1 className="text-lg font-semibold">{product.name}</h1>
                       <p className="text-lg font-semibold text-orange-400">{product.price}$</p>
                     </div>
                   </motion.div>
