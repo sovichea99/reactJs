@@ -44,9 +44,7 @@ const Navbars = () => {
   }, []);
 
   const profileMenu = [
-    { title: "My Profile", link: "/profile", icon: <FiUser /> },
     { title: "Orders", link: "/orders", icon: <MdOutlineShoppingCart /> },
-    { title: "Settings", link: "/settings", icon: <FiSettings /> },
     user && user.email
       ? { title: "Logout", link: "/login", icon: <FiLogOut /> }
       : { title: "Register", link: "/register", icon: <FiUserPlus /> },

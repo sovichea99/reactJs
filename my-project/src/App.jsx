@@ -9,7 +9,7 @@ import AddToCart from "./Components/Navbar/AddToCart"; // Cart Page
 import PaymentPage from "./Components/Navbar/PaymentPage"; // Payment Page
 import AboutUs from "./Components/Navbar/AboutUs"; // About Us Page
 import Dashboard from "./Components/Navbar/Dashboard"; // Dashboard Page
-import Login from "./Components/Auth/Login"; // Login Page
+//import Login from "./Components/Auth/Login"; 
 import Register from "./Components/Auth/register";
 
 const Layout = () => {
