@@ -1,19 +1,19 @@
 import { NavLink } from "react-router-dom";
 import {
-  ArrowRightEndOnRectangleIcon,
-  ArrowRightIcon,
-  ArrowUpRightIcon,
   ChartBarIcon,
   ShoppingBagIcon,
+  TableCellsIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { adminLogout } from "../services/auth";
 import { IoIosHome } from "react-icons/io";
 
+
 export default function Sidebar({ onClose }) {
   const navigation = [
     { name: "Dashboard", href: "/", icon: ChartBarIcon },
     { name: "Orders", href: "/orders", icon: ShoppingBagIcon },
+    { name: "Category", href: "/category", icon: TableCellsIcon},
     { name: "Products", href: "/products", icon: ShoppingBagIcon },
     { name: "Customers", href: "/customers", icon: UsersIcon },
   ];

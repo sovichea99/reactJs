@@ -6,6 +6,7 @@ import Orders from "./Pages/Orders";
 import Products from "./Pages/Products";
 import Login from "./Pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Category from "./Pages/Category";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
          <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="category" element={<Category />} />
           <Route path="products" element={<Products />} />
           <Route path="customers" element={<Customers />} />
         </Route>

@@ -38,7 +38,7 @@ class CategoryController extends Controller
             $category->save();
 
             return response()->json([
-                'message'=>'Category updated successfully',
+                'message'=>'Category added successfully',
                 'category'=>$category,
             ],200);
         } catch (\Illuminate\Database\QueryException $e) {
