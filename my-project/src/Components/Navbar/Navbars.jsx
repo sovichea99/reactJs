@@ -47,7 +47,7 @@ const Navbars = () => {
     { title: "Orders", link: "/orders", icon: <MdOutlineShoppingCart /> },
     user && user.email
       ? { title: "Logout", link: "/login", icon: <FiLogOut /> }
-      : { title: "Register", link: "/register", icon: <FiUserPlus /> },
+      : { title: "Register/Login", link: "/register", icon: <FiUserPlus /> },
   ];
 
   return (
