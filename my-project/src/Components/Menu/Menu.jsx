@@ -43,7 +43,7 @@ const Menu = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="text-2xl font-bold text-left pb-10 uppercase"
         >
-          Our Menu
+          Our Products
         </motion.h1>
         <div className="grid grid-cols-1 lg:m-auto lg:w-[100%] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-8 md:gap-10 justify-items-center">
           {displayedProducts.map((product) => (
