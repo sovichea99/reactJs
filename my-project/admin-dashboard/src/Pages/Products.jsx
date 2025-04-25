@@ -64,7 +64,7 @@ export default function Products() {
             <img 
               src={product.image_url} 
               alt={product.name} 
-              className="w-full h-48 object-cover mb-4"
+              className="w-[200px] h-52 mx-auto mb-4"
             />
             <h3 className="font-bold text-lg">{product.name}</h3>
             <p className="text-gray-600">${product.price}</p>
@@ -72,7 +72,7 @@ export default function Products() {
               <span className="text-sm text-gray-500">Stock: {product.stock}</span>
               <button 
                 onClick={() => handleEdit(product)} 
-                className="bg-blue-500 text-white px-3 py-1 rounded"
+                className="bg-red-500 text-white px-3 py-1 rounded"
               >
                 Edit
               </button>
