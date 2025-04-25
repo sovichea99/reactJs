@@ -56,16 +56,29 @@ export default function Category() {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-2xl font-bold mb-4">Categories</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-6">
         {categories.map((category) => (
-          <div key={category._id} className="border rounded-lg p-4">
-            <h3 className="font-bold text-lg">{category.name}</h3>
-            <div className="mt-2 flex justify-between items-center">
+          <div key={category._id} className="border rounded-lg p-2 flex flex-row space-x-80">
+            <h3 className="font-bold text-lg mt-3">{category.name}</h3>
+            <div className="mt-2 justify-between items-center flex flex-row ml-20 space-x-2">
               <button
                 onClick={() => handleEdit(category)}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
+                className="bg-green-500 text-white px-3 py-1 rounded w-16"
               >
                 Edit
+              </button>
+              <button 
+              
+                onClick={async () => {
+                  try {
+                    await api.delete(`/categories/${category._id}`);
+                    setCategories(categories.filter((cat) => cat._id !== category._id));
+                  } catch (error) {
+                    console.error("Error deleting category:", error);
+                  }
+                }}
+              className="bg-red-500 text-white px-3 py-1 rounded mt-1 mb-1">
+                Delete
               </button>
             </div>
           </div>
