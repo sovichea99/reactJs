@@ -22,7 +22,7 @@ export default function AddCategoryForm({ onAdd, onCancel }) {
   return (
     <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
       <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px]">
-        <h2 className="text-xl font-bold mb-3">Add Product</h2>
+        <h2 className="text-xl font-bold mb-3">Add Category</h2>
         <form onSubmit={handleSubmit}>
           <div className="flex gap-2 mb-3">
             <div className="w-1/2">

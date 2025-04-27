@@ -92,42 +92,44 @@ export default function Category() {
           "Content-Type": "application/json",
         },
       });
-  
+
       console.log("Added category:", response.data);
-  
+
       setCategories((prevCategories) => [...prevCategories, response.data]);
     } catch (error) {
       console.error("Error adding category:", error);
     }
   };
-  
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-2xl font-bold mb-4">Categories</h2>
-      <button
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 space-y-4 md:space-y-0">
+        <h2 className="text-2xl font-bold">Categories</h2>
+        <button
           onClick={() => setShowAddForm(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded mb-4"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
         >
-          Add New Product
-        </button> 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-6">
+          Add New Category
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {categories.map((category) => (
           <div
             key={category._id}
-            className="border rounded-lg p-2 flex flex-row space-x-80"
+            className="border rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between"
           >
-            <h3 className="font-semibold text-md mt-3">{category.name}</h3>
-            <div className="mt-2 justify-between items-center flex flex-row ml-20 space-x-2">
+            <h3 className="font-semibold text-lg">{category.name}</h3>
+            <div className="flex flex-row space-x-2 mt-4 md:mt-0">
               <button
                 onClick={() => handleEdit(category)}
-                className="bg-green-500 text-white px-3 py-1 rounded w-16"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(category.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded mt-1 mb-1"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
               >
                 Delete
               </button>
@@ -144,13 +146,14 @@ export default function Category() {
           onCancel={() => setEditingCategory(null)}
         />
       )}
-        {/* Add Category Modal */}
-        {showAddForm && (
+
+      {/* Add Category Modal */}
+      {showAddForm && (
         <AddCategoryForm
           onAdd={handleAddCategory}
           onCancel={() => setShowAddForm(false)}
         />
-        )}
+      )}
     </div>
   );
 }

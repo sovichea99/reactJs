@@ -63,4 +63,9 @@ class Products extends Eloquent
             $model->updated_at = now();
         });
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category', '_id');
+    }
 }

@@ -40,6 +40,7 @@ Route::prefix('categories')->group(function () {
     Route::post('/', [CategoryController::class, 'store'])->middleware('auth:admin'); // Add category
     Route::post('/{id}', [CategoryController::class, 'update'])->middleware('auth:admin'); // Update category
     Route::delete('/{id}', [CategoryController::class, 'destroy'])->middleware('auth:admin'); // Delete category
+    Route::get('/categories/{/id}/products', [CategoryController::class, 'getProductsByCategory']); // Get category by ID
 });
 
 //Access all user
