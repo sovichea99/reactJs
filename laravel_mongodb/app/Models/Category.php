@@ -9,6 +9,7 @@ class Category extends Model
     //
     protected $connection = 'mongodb';
     protected $collection = 'categories';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
     ];
@@ -20,6 +21,8 @@ class Category extends Model
         'created_at',
         'updated_at',
     ];
+
+
     public function getCreatedAtAttribute($value)
     {
         return $this->asDateTime($value);
@@ -36,10 +39,7 @@ class Category extends Model
     {
         return $this->name;
     }
-    public function getCategoryDescriptionAttribute()
-    {
-        return $this->description;
-    }
+
     public function getCategoryIdAttribute()
     {
         return $this->cat_id;

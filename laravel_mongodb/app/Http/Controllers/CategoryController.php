@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    //
     public function index()
     {
         // Fetch all categories from the database
@@ -25,7 +24,7 @@ class CategoryController extends Controller
                 'name' => 'required|string|max:255',
             ]);
 
-            if (Category::where('name',$request->name)->exists()) {
+            if (Category::where('name', $request->name)->exists()) {
                 return response()->json([
                     'error' => 'Category already exists'
                 ], 422);
@@ -38,9 +37,9 @@ class CategoryController extends Controller
             $category->save();
 
             return response()->json([
-                'message'=>'Category updated successfully',
-                'category'=>$category,
-            ],200);
+                'message' => 'Category added successfully',
+                'category' => $category,
+            ], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'error' => 'Category creation failed',
@@ -53,11 +52,12 @@ class CategoryController extends Controller
         }
     }
 
-    public function update(Request $request, $id){
-        try{
+    public function update(Request $request, $id)
+    {
+        try {
             $category = Category::find($id);
 
-            if(!$category){
+            if (!$category) {
                 return response()->json([
                     'error' => 'Category not found',
                 ], 404);
@@ -78,11 +78,10 @@ class CategoryController extends Controller
             $category->save();
 
             return response()->json([
-                'message'=>'Category updated successfully',
-                'category'=>$category,
-            ],200);
-
-        }catch(\Illuminate\Database\QueryException $e){
+                'message' => 'Category updated successfully',
+                'category' => $category,
+            ], 200);
+        } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'error' => 'Category update failed',
                 'message' => $e->getMessage()
@@ -90,11 +89,12 @@ class CategoryController extends Controller
         }
     }
 
-    public function destroy($id){
-        try{
+    public function destroy($id)
+    {
+        try {
             $category = Category::find($id);
 
-            if(!$category){
+            if (!$category) {
                 return response()->json([
                     'error' => 'Category not found',
                 ], 404);
@@ -105,8 +105,29 @@ class CategoryController extends Controller
             return response()->json([
                 'message' => 'Category deleted successfully'
             ], 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json([
+                'error' => 'Category deletion failed',
+                'message' => $e->getMessage()
+            ], 422);
+        }
+    }
 
-        }catch(\Illuminate\Database\QueryException $e){
+    public function getProductsByCategory($categoryId)
+    {
+        try {
+            $category = Category::with('products')->find($categoryId);
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Category not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'category' => $category,
+                'products' => $category->products
+            ], 200);
+        } catch (\Illuminate\Database\QueryException $e) {
             return response()->json([
                 'error' => 'Category deletion failed',
                 'message' => $e->getMessage()
