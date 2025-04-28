@@ -28,6 +28,7 @@ export default function Products() {
       formData.append("price", newProduct.price);
       formData.append("stock", newProduct.stock);
       formData.append("category", newProduct.category);
+      formData.append("description", newProduct.description);
 
       // Append the image file if it exists
       if (image_url) {
@@ -62,6 +63,7 @@ export default function Products() {
       formData.append("price", updatedProduct.price);
       formData.append("stock", updatedProduct.stock);
       formData.append("category", updatedProduct.category);
+      formData.append("description", updatedProduct.description);
 
       // Append the image file if it exists
       if (imageFile) {
@@ -112,7 +114,8 @@ export default function Products() {
               className="w-[200px] h-52 mx-auto mb-4"
             />
             <h3 className="font-bold text-lg">{product.name}</h3>
-            <p className="text-gray-600">${product.price}</p>
+            <p className="text-red-600 font-bold">${product.price}</p> 
+            <p className="text-gray-400 text-xs">{product.description}</p>
             <div className="mt-2 flex justify-between items-center">
               <span className="text-sm text-gray-500">
                 Stock: {product.stock}

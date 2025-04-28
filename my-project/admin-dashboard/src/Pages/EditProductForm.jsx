@@ -32,8 +32,8 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
   };
 
   return (
-    <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
-      <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px]">
+    <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 overflow-y-auto py-6">
+      <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px] max-h-screen overflow-y-auto">
         {" "}
         {/* Changed from w-96 to w-80 and padding */}
         <h2 className="text-xl font-bold mb-3">Edit Product</h2>{" "}
@@ -86,7 +86,16 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               />
             </div>
           </div>
-
+          <div className="">
+              <label className="block text-xs font-medium mb-1">Description</label>
+              <input
+                type="text"
+                name="description"
+                value={updatedProduct.description}
+                onChange={handleChange}
+                className="w-full p-1.5 text-sm border rounded"
+              />
+            </div>
           {/* Image Upload */}
           <div className="mb-3">
             <label className="block text-xs font-medium mb-1">Image</label>

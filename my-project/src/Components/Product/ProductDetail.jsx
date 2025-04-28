@@ -51,7 +51,7 @@ const ProductDetail = () => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-5 backdrop-blur-sm flex items-center justify-center z-50">
             <motion.div
-                className="relative container w-[350px] mx-auto mt-5 lg:h-[560px] p-4 md:mt-20 md:p-10 lg:w-[600px] sm:w-[480px] sm:h-[550px] h-[430px] bg-white rounded-3xl shadow-[0_0_22px_0_rgba(0,0,0,0.15)]"
+                className="relative container w-[300px] mx-auto mt-5 lg:h-[450px] p-4 md:mt-20 md:p-10 lg:w-[550px] sm:w-[380px] sm:h-[420px] md:h-[450px] h-[380px] bg-white rounded-3xl shadow-[0_0_22px_0_rgba(0,0,0,0.15)]"
             >
                 <button
                     onClick={() => navigate('/products')}
@@ -75,14 +75,14 @@ const ProductDetail = () => {
                     className="flex flex-col lg:flex-row items-center lg:items-start"
                 >
                     <img
-                        src={product.image} // Use the correct image URL field
-                        alt={product.title}
+                        src={product.image_url} // Use the correct image URL field
+                        alt={product.name}
                         className="w-[100px] max-w-xs h-auto lg:w-[200px] rounded-lg mb-6 lg:mb-0 lg:mr-10 sm:w-[150px]"
                     />
                     <div className="text-center lg:text-left">
-                        <h1 className="text-xl lg:text-1xl lg:mt-10 font-bold mt-[-20px] lg:mb-4">{product.title}</h1>
+                        <h1 className="text-xl lg:text-1xl lg:mt-10 font-bold mt-[-20px] lg:mb-4">{product.name}</h1>
                         <p className="text-xl lg:text-1xl lg:mb-[-80px] mb-[-30px] font-semibold text-orange-400">{product.price}$</p>
-                        <p className="text-xs lg:text-base mt-[-30px] sm:text-[15px] lg:mt-[40px] sm:pt-[35px] pt-10 sm:pb-[10px] text-gray-700 px-4 lg:px-0">
+                        <p className="text-xs lg:text-base mt-[-30px] sm:text-[15px] lg:mt-[50px] sm:pt-[35px] pt-10 sm:pb-[10px] text-gray-700 px-4 lg:px-0">
                             {product.description}
                         </p>
                     </div>

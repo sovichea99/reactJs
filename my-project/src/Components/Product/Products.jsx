@@ -72,8 +72,8 @@ const Products = () => {
               initial="hidden"
               whileInView="visible"
               whileHover={{ scale: 1.08 }}
-               key={product.id} className="relative bg-white w-[220px] rounded-3xl px-4 py-4 shadow-[0_0_22px_0_rgba(0,0,0,0.15)] flex flex-col items-center">
-                <Link to={`/product/${product.id}`}>
+               key={product._id} className="relative bg-white w-[220px] rounded-3xl px-4 py-4 shadow-[0_0_22px_0_rgba(0,0,0,0.15)] flex flex-col items-center">
+                <Link to={`/product/${product._id}`}>
                   <motion.div>
                     <img
                       src={product.image_url}
