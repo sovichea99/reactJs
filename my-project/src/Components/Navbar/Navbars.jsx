@@ -1,7 +1,12 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { IoIosHome, IoIosArrowDown } from "react-icons/io";
 import { MdMenu, MdOutlineShoppingCart } from "react-icons/md";
-import { FiUser, FiSettings, FiLogOut, FiUserPlus } from "react-icons/fi";
+import {
+  FiUser,
+  FiLogOut,
+  FiUserPlus,
+  FiShoppingBag,
+} from "react-icons/fi";
 import ResponsiveMenu from "./ResponsiveMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../../Contexts/CartContext";
@@ -20,9 +25,15 @@ const Navbars = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { itemCount } = useContext(CartContext);
+  const { itemCount, clearCart } = useContext(CartContext);
   const profileRef = useRef(null);
 
+  const handleLogout = () => {
+    clearCart(); // Clear cart items
+    sessionStorage.removeItem("authToken"); // Remove auth token
+    sessionStorage.removeItem("user"); // Remove user data
+    navigate("/login"); // Redirect to login page
+  };
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -44,9 +55,9 @@ const Navbars = () => {
   }, []);
 
   const profileMenu = [
-    { title: "Orders", link: "/orders", icon: <MdOutlineShoppingCart /> },
+    { title: "Orders", link: "/orders", icon: <FiShoppingBag /> },
     user && user.email
-      ? { title: "Logout", link: "/login", icon: <FiLogOut /> }
+      ? { title: "Logout", action: "logout", icon: <FiLogOut /> }
       : { title: "Register/Login", link: "/register", icon: <FiUserPlus /> },
   ];
 
@@ -145,17 +156,31 @@ const Navbars = () => {
                       <a
                         key={index}
                         href={item.link}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigate(item.link);
+                        className={`block px-4 py-2.5 text-sm text-gray-700 cursor-pointer transition-colors 
+                        ${
+                           // This is the ternary operator for the hover color
+                            item.action === "logout"? "hover:bg-red-50 hover:text-red-600" 
+                            : "hover:bg-green-50" 
+                        }`}
+                        onClick={() => {
+                          // First, check for the special 'logout' action
+                          if (item.action === "logout") {
+                            handleLogout();
+                          }
+                          // If it's not a logout action, check if it has a link
+                          else if (item.link) {
+                            navigate(item.link);
+                          }
+                          // Finally, always close the dropdown after an action
                           setShowProfileDropdown(false);
                         }}
                       >
                         <div className="flex items-center gap-2">
                           {/* {item.icon} 
                           {item.title} */}
-                          <span className="text-base flex items-center">{item.icon}</span>
+                          <span className="text-base flex items-center">
+                            {item.icon}
+                          </span>
                           <span>{item.title}</span>
                         </div>
                       </a>

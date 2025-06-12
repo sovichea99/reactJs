@@ -7,7 +7,7 @@ export default function Customers() {
 
   // Example static data - replace with API call
   useEffect(() => {
-    api.get('/users', {
+    api.get('admin/users', {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem('authToken')}`
       }

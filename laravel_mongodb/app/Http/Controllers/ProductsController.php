@@ -6,52 +6,67 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use MongoDB\BSON\ObjectId;
 
 class ProductsController extends Controller
 {
     public function index()
     {
-        $products = Products::all();
-        return response()->json($products);
+        try {
+            $products = Products::all();
+            return response()->json($products);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
     {
         try {
-            // Validate input data
             $validated = $request->validate([
                 'name' => 'required|string|max:255|unique:mongodb.products',
                 'description' => 'nullable|string',
                 'price' => 'required|numeric|min:0',
                 'stock' => 'required|integer|min:0',
                 'category' => 'nullable|string',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Fixed max size
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // Store the image in the 'products' folder on the 'public' disk
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
+            // Upload image to Cloudinary
+            $uploadedImage = Cloudinary::uploadApi()->upload($request->file('image')->getRealPath());
 
-            // Generate the image URL to return to the client using asset() helper
-            $validated['image_url'] = asset('storage/' . $imagePath);
+            // stores the image URL and Cloudinary ID 
+            $validated['image'] = $uploadedImage['secure_url'];
+            $validated['cloudinary_id'] = $uploadedImage['public_id'];
 
-            // Create the product in the database with the validated data
             $product = Products::create($validated);
 
-            return response()->json($product, 201);  // Return the created product with a 201 status
+            return response()->json($product, 201);
 
         } catch (ValidationException $e) {
-            // If validation fails, return the validation error messages
             return response()->json([
-                'error' => $e->errors()
+                'message' => 'The given data was invalid.',
+                'errors' => $e->errors()
             ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error'   => 'An unexpected error occurred during the upload process.',
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                'cloud_name' => config('cloudinary.cloud_name'),
+                'api_key' => config('cloudinary.api_key'),
+                'api_secret' => config('cloudinary.api_secret') ? '***' : 'MISSING' 
+            ], 500);
         }
     }
 
     public function show(string $id)
     {
-        // Find the product by its ID (MongoDB handles this well even with string _id)
         $product = Products::where('_id', $id)->first();
 
         if (!$product) {
@@ -66,48 +81,40 @@ class ProductsController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            // Find the product by its ID
-            $product = Products::findOrFail($id);  // This works fine with string _id
+            $product = Products::findOrFail($id);
 
-            // Validate input data, marking some fields as optional (sometimes)
             $validated = $request->validate([
                 'name' => 'sometimes|string|max:255|unique:mongodb.products,name,' . $id . ',_id',
                 'description' => 'nullable|string',
                 'price' => 'sometimes|numeric|min:0',
                 'stock' => 'sometimes|integer|min:0',
                 'category' => 'nullable|string',
-                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048', // Changed to 'sometimes'
+                'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // Handle image update if a new image is uploaded
             if ($request->hasFile('image')) {
-                // Delete the old image if it exists
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
+                if ($product->cloudinary_id) {
+                    Cloudinary::uploadApi()->destroy($product->cloudinary_id);
                 }
 
-                // Store the new image
-                $imagePath = $request->file('image')->store('products', 'public');
-                $validated['image'] = $imagePath;
-                $validated['image_url'] = asset('storage/' . $imagePath);
+                $uploadedImage = Cloudinary::uploadApi()->upload($request->file('image')->getRealPath());
+
+                $validated['image'] = $uploadedImage['secure_url'];
+                $validated['cloudinary_id'] = $uploadedImage['public_id'];
             }
 
-            // Update the product with the validated data
             $product->update($validated);
 
-            // Return the updated product data
-            return response()->json($product->fresh()); // fresh() ensures that we return the updated model
+            return response()->json($product->fresh());
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
-            // Handle any other potential errors (e.g., database issues)
-            return response()->json(['error' => 'Something went wrong.'], 500);
+            return response()->json(['error' => 'Something went wrong.', 'message' => $e->getMessage()], 500);
         }
     }
 
     public function destroy(string $id)
     {
-        // Find the product by its ID
         $product = Products::where('_id', $id)->first();
 
         if (!$product) {
@@ -116,14 +123,12 @@ class ProductsController extends Controller
             ], 404);
         }
 
-        // Delete the image if it exists
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        if ($product->cloudinary_id) {
+            Cloudinary::uploadApi()->destroy($product->cloudinary_id);
         }
 
-        // Delete the product from the database
         $product->delete();
 
-        return response()->json(null, 204);  // Return a 204 status indicating successful deletion
+        return response()->json(null, 204);
     }
 }

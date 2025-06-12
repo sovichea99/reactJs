@@ -10,7 +10,7 @@ import PaymentPage from "./Components/Navbar/PaymentPage"; // Payment Page
 import AboutUs from "./Components/Navbar/AboutUs"; // About Us Page
 import Dashboard from "./Components/Navbar/Dashboard"; // Dashboard Page
 import Login from "./Components/Auth/login"; // Login Page
-import Register from "./Components/Auth/register";
+import Register from "./Components/Auth/Register";
 
 const Layout = () => {
   const location = useLocation();

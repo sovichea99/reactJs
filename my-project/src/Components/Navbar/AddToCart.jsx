@@ -1,5 +1,5 @@
   import React, { useContext } from 'react';
-  import { CartContext } from '../../Contexts/CartContext';
+  import {CartContext} from '../../Contexts/CartContext';
   import { MdAdd, MdRemove, MdDelete, MdArrowBack } from 'react-icons/md';
   import { FaRegCreditCard } from 'react-icons/fa';
   import { motion } from 'framer-motion';
