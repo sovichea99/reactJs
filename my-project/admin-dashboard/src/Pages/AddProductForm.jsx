@@ -6,8 +6,10 @@ export default function AddProductForm({ onAdd, onCancel }) {
     price: '',
     stock: '',
     category: '',
+    description: '',
+    image: null,
   });
-  const [image_url, setImageFile] = useState(null);
+  const [image, setImageFile] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,11 +26,11 @@ export default function AddProductForm({ onAdd, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd(newProduct, image_url);
+    onAdd(newProduct, image);
   };
 
   return (
-    <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
+    <div className="modal fixed z-10 inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50">
       <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px]">
         <h2 className="text-xl font-bold mb-3">Add Product</h2>
         <form onSubmit={handleSubmit}>
@@ -79,7 +81,17 @@ export default function AddProductForm({ onAdd, onCancel }) {
               />
             </div>
           </div>
-
+          {/* Description */}
+          <div className="mb-3">
+            <label className="block text-xs font-medium mb-1">Description</label>
+            <input
+              type="text"
+              name="description"
+              value={newProduct.description}
+              onChange={handleChange}
+              className="w-full p-1.5 text-sm border rounded"
+            />
+          </div>
           {/* Image Upload */}
           <div className="mb-3">
             <label className="block text-xs font-medium mb-1">Image</label>
@@ -88,9 +100,9 @@ export default function AddProductForm({ onAdd, onCancel }) {
               onChange={handleImageChange}
               className="w-full text-sm"
             />
-            {image_url && (
+            {image && (
               <img
-                src={URL.createObjectURL(image_url)}
+                src={URL.createObjectURL(image)}
                 alt="Preview"
                 className="w-full h-52 object-cover mt-2 rounded"
               />

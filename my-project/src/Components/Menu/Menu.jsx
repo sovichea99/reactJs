@@ -58,7 +58,7 @@ const Menu = () => {
               <Link to={`/product/${product.id}`}>
                 <motion.div>
                   <img
-                    src={product.image_url}
+                    src={product.image}
                     alt={product.name}
                     className="w-[80px] h-[80px] object-cover -translate-y-6 scale-150 mb-4"
                   />

@@ -36,7 +36,6 @@ Route::prefix('products')->group(function () {
     Route::post('/{id}', [ProductsController::class, 'update'])->middleware('auth:admin');
     Route::delete('/{id}', [ProductsController::class, 'destroy'])->middleware('auth:admin');
 });
-
 // ==================== CATEGORIES ROUTES ====================
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);

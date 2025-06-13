@@ -20,7 +20,11 @@ export const CartProvider = ({ children }) => {
 
       const response = await api.get(`/cart/${user.id}`);
       if (response.data && response.data.items) {
-        setCartItems(response.data.items);
+         const normalizedItems = response.data.items.map((item) => ({
+          ...item,
+          image_url: item.image || item.image_url || "https://via.placeholder.com/150",
+        }));
+        setCartItems(normalizedItems);
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -87,7 +91,7 @@ export const CartProvider = ({ children }) => {
         name: product.name || "Unnamed Product",
         price: parseFloat(product.price) || 0,
         quantity: 1,
-        image_url: product.image_url || "",
+        image_url: product.image || "https://via.placeholder.com/150",
       };
       setCartItems((prevItems) => [...prevItems, newCartItem]);
     }

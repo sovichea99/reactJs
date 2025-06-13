@@ -12,7 +12,7 @@ export default function Layout() {
       {/* Mobile overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -21,7 +21,7 @@ export default function Layout() {
       <div
         className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:relative overflow-y-auto`}
+        } lg:translate-x-0 lg:relative overflow-y-auto`}
       >
         <Sidebar onClose={() => setIsSidebarOpen(false)} />
       </div>
@@ -29,11 +29,11 @@ export default function Layout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-md px-4 py-4 flex items-center">
+        <header className="bg-white shadow-md px-4 py-4 flex items-center z-30">
           {/* Hamburger Button */}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+            className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
           >
             <svg
               className="w-6 h-6"

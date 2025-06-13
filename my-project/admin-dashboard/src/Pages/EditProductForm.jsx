@@ -5,40 +5,51 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
   const [updatedProduct, setUpdatedProduct] = useState({ ...product });
   const [imageFile, setImageFile] = useState(null);
 
-  // Log the updated product to check if it has _id
-  console.log("Editing product in form:", updatedProduct);
+  // Debugging: Let's see what prop we receive. It should have `_id`.
+  console.log("Product received in form:", product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedProduct((prev) => ({
       ...prev,
       [name]: value,
-      image_url: imageFile ? URL.createObjectURL(imageFile) : product.image_url,
     }));
   };
+
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!updatedProduct._id) {
-      console.error("Product ID is missing!");
-      return;
-    }
+  e.preventDefault();
+  
+  if (!updatedProduct.id) {
+    console.error("Product id is missing!");
+    return;
+  }
 
-    console.log("Form submitted with product:", updatedProduct);
-    onUpdate(updatedProduct, imageFile); // Pass the updated product to the handler
-  };
+  const formData = new FormData();
+  formData.append("id", updatedProduct.id); // Add this line
+  formData.append("name", updatedProduct.name);
+  formData.append("price", updatedProduct.price);
+  formData.append("stock", updatedProduct.stock);
+  formData.append("category", updatedProduct.category);
+  formData.append("description", updatedProduct.description);
+
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
+  
+  // Pass the formData and imageFile separately
+  onUpdate(updatedProduct, imageFile);
+};
 
   return (
-    <div className="modal fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 overflow-y-auto py-6">
+    <div className="modal fixed z-10 inset-0 flex justify-center items-center bg-gray-500 bg-opacity-50 overflow-y-auto py-6">
       <div className="modal-content bg-white p-4 rounded-xl shadow-lg w-[400px] max-h-screen overflow-y-auto">
-        {" "}
-        {/* Changed from w-96 to w-80 and padding */}
-        <h2 className="text-xl font-bold mb-3">Edit Product</h2>{" "}
-        {/* Smaller title */}
+        <h2 className="text-xl font-bold mb-3">Edit Product</h2>
         <form onSubmit={handleSubmit}>
+          {/* All your input fields remain the same... */}
           {/* Row 1: Name + Price */}
           <div className="flex gap-2 mb-3">
             <div className="w-1/2">
@@ -86,38 +97,31 @@ export default function EditProductForm({ product, onUpdate, onCancel }) {
               />
             </div>
           </div>
-          <div className="">
-              <label className="block text-xs font-medium mb-1">Description</label>
-              <input
-                type="text"
-                name="description"
-                value={updatedProduct.description}
-                onChange={handleChange}
-                className="w-full p-1.5 text-sm border rounded"
-              />
-            </div>
+          {/* Description */}
+          <div className="mb-3">
+            <label className="block text-xs font-medium mb-1">Description</label>
+            <input
+              type="text"
+              name="description"
+              value={updatedProduct.description || ''} // Handle if description is null
+              onChange={handleChange}
+              className="w-full p-1.5 text-sm border rounded"
+            />
+          </div>
           {/* Image Upload */}
           <div className="mb-3">
-            <label className="block text-xs font-medium mb-1">Image</label>
+            <label className="block text-xs font-medium mb-1">Replace Image (Optional)</label>
             <input
               type="file"
               onChange={handleImageChange}
               className="w-full text-sm"
+              accept="image/*"
             />
-            {updatedProduct.image_url && !imageFile && (
-              <img
-                src={updatedProduct.image_url}
-                alt={updatedProduct.name}
-                className="w-full h-[300px]  mt-5 rounded"
-              />
-            )}
-            {imageFile && (
-              <img
-                src={URL.createObjectURL(imageFile)}
-                alt="Preview"
-                className="w-full h-32 object-cover mt-2 rounded"
-              />
-            )}
+            <img
+              src={imageFile ? URL.createObjectURL(imageFile) : updatedProduct.image}
+              alt="Preview"
+              className="w-full h-48 object-cover mt-2 rounded"
+            />
           </div>
 
           {/* Buttons */}

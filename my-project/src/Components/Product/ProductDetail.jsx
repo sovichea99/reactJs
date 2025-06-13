@@ -15,15 +15,18 @@ const ProductDetail = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}`); // Corrected API call
+                const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}`);
                 setProduct(response.data);
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching product:', err);
-                setError('Failed to fetch product');
+                if (err.response && err.response.status === 404) {
+                    setError('Product not found');
+                } else {
+                    setError('Failed to fetch product');
+                }
                 setLoading(false);
             }
         };
@@ -32,8 +35,10 @@ const ProductDetail = () => {
     }, [id]);
 
     const handleAddToCart = () => {
-        addToCart(product);
-        navigate('/cart'); // Navigate to the cart page after adding to cart
+        if (product) {
+            addToCart(product);
+            navigate('/cart');
+        }
     };
 
     if (loading) {
@@ -75,7 +80,7 @@ const ProductDetail = () => {
                     className="flex flex-col lg:flex-row items-center lg:items-start"
                 >
                     <img
-                        src={product.image_url} // Use the correct image URL field
+                        src={product.image || 'https://via.placeholder.com/200'}
                         alt={product.name}
                         className="w-[100px] max-w-xs h-auto lg:w-[200px] rounded-lg mb-6 lg:mb-0 lg:mr-10 sm:w-[150px]"
                     />

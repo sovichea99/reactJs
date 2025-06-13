@@ -32,7 +32,7 @@ class UserCartController extends Controller
             'items.*.name' => 'required|string',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|numeric|min:0',
-            'items.*.image_url' => 'nullable|string',
+            'items.*.image' => 'nullable|string',
         ]);
 
         $cart = UserCart::updateOrCreate(

@@ -52,7 +52,7 @@
                     className="flex flex-col md:flex-row items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md"
                   >
                     <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                      <img src={item.image_url} alt={item.name} className="w-16 h-16 rounded-lg" />
+                      <img src={item.image_url} alt={item.name} className="w-20 h-16 rounded-lg" />
                       <div>
                         <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
                         <p className="text-orange-500">${item.price}</p>

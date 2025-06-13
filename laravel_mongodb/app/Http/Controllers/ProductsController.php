@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -42,7 +43,6 @@ class ProductsController extends Controller
             // stores the image URL and Cloudinary ID 
             $validated['image'] = $uploadedImage['secure_url'];
             $validated['cloudinary_id'] = $uploadedImage['public_id'];
-
             $product = Products::create($validated);
 
             return response()->json($product, 201);

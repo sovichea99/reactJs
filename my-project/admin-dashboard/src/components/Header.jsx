@@ -20,12 +20,12 @@ export default function Header() {
     }, []);
 
     return (
-        <div className="bg-white p-0 flex items-center justify-end z-10">
+        <div className="bg-white p-0  flex items-center justify-end z-0">
             {/* Adjusted Padding */}
             <div className="relative">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center space-x-1 sm:space-x-2 hover:bg-gray-100 rounded-full p-1 sm:p-2" // Adjusted Padding and Space
+                    className="flex items-center z-0 space-x-1 sm:space-x-2 hover:bg-gray-100 rounded-full p-1 sm:p-2" // Adjusted Padding and Space
                 >
                     <UserCircleIcon className="h-5 w-5 sm:h-7 sm:w-7 text-gray-600" /> {/* Adjusted Icon Size */}
                     <div className="text-left">
