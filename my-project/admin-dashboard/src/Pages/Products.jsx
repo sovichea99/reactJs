@@ -130,7 +130,7 @@ export default function Products() {
   return (
     <div className="bg-white rounded-lg shadow z-auto p-6">
       <div
-        className="sticky top-0 z-20 bg-white/80 backdrop-blur-md 
+        className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm 
              p-4 border-b border-gray-200/60 shadow-sm
              flex flex-col gap-4
              md:flex-row md:items-center md:justify-between md:rounded-full md:py-3 md:px-6"
