@@ -83,7 +83,10 @@ class User extends Model implements AuthenticatableContract, JWTSubject
     {
         return 'password'; // Return the name of the password field
     }
-
+public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     /**
      * Get the "remember me" token value.
      *

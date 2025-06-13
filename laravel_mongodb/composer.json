@@ -8,7 +8,7 @@
     "require": {
         "php": "^8.2",
         "cloudinary-labs/cloudinary-laravel": "^3.0",
-        "jenssegers/mongodb": "^5.2",
+        "jenssegers/mongodb": "^5.4",
         "laravel/framework": "^12.10",
         "laravel/tinker": "^2.10.1",
         "mongodb/mongodb": "^1.21",
