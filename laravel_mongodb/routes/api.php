@@ -45,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::prefix('orders')->group(function () {
+        Route::get('/user/{userId}', [OrderController::class, 'userOrders']);
         Route::get('/', [OrderController::class, 'index']);
         Route::post('/', [OrderController::class, 'store']);
         Route::get('/{id}', [OrderController::class, 'show']);
@@ -78,7 +79,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index']); 
         Route::put('/{id}/status', [OrderController::class, 'updateStatus']);
-        Route::get('/user', [OrderController::class, 'userOrders']);
+         Route::get('/{id}', [OrderController::class, 'show']);
     });
 });
 

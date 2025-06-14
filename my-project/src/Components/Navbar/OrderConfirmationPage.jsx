@@ -16,7 +16,8 @@ const OrderConfirmationPage = () => {
 
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.userId || payload.sub;
-
+        // Debug: Print the extracted userId
+        console.log("User ID from token:", userId);
         const response = await api.get(`/orders/user/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });

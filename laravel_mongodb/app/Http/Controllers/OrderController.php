@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,8 @@ class OrderController extends Controller
      */
     public function index()
     { // This query FORGETS to select the _id!
-    // Simply removing the ->select() fixes it by selecting all columns (*).
-    return Order::with('user')->latest()->paginate(15);
+        // Simply removing the ->select() fixes it by selecting all columns (*).
+        return Order::with('user')->latest()->paginate(15);
     }
 
     /**
@@ -61,9 +62,35 @@ class OrderController extends Controller
      */
     public function show($id)
     {
+        $user = Auth::user();
+
         $order = Order::with('user')->findOrFail($id);
+
+        // If no user or unauthorized, you may want to handle it
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        // If admin, enrich items with product info
+        if ($user->is_admin) {
+            $itemsWithDetails = [];
+            foreach ($order->items as $item) {
+                $product = Products::find($item['product_id']);
+                $itemsWithDetails[] = [
+                    'product_id' => $item['product_id'],
+                    'name' => $product->name ?? $item['name'], // fallback to existing
+                    'image_url' => $product->image_url ?? $item['image_url'] ?? null,
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                ];
+            }
+            $order->items = $itemsWithDetails;
+        }
+        // else for normal users, just return as is (or you can add checks here)
+
         return response()->json($order->makeVisible('items'));
     }
+
 
     /**
      * Display all orders for a specific user.
@@ -79,6 +106,7 @@ class OrderController extends Controller
             ->map(function ($order) {
                 return [
                     'id' => $order->_id,
+                    'user_id' => $order->user_id,
                     'total' => $order->total,
                     'status' => $order->status,
                     'items' => $order->items ?? [],
@@ -102,8 +130,9 @@ class OrderController extends Controller
             return $sum + ($item['price'] * $item['quantity']);
         }, 0);
     }
-    public function updateStatus(Request $request, $orderId) // Using route model binding
+    public function updateStatus(Request $request, $id) // Using route model binding
     {
+        $order = Order::findOrFail($id);
         // 1. Define the possible valid statuses
         $validStatuses = ['Processing', 'Shipped', 'Delivered', 'Cancelled'];
 
@@ -117,7 +146,6 @@ class OrderController extends Controller
         ]);
 
         // 3. Update the order's status
-        $order = Order::findOrFail($orderId);
         $order->status = $validated['status'];
         $order->save();
 

@@ -62,7 +62,7 @@ const PaymentPage = () => {
       }));
 
       const response = await api.post(
-        "/orders",
+        '/orders',
         { items },
         {
           headers: {

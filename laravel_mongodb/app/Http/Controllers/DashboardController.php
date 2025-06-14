@@ -49,4 +49,24 @@ class DashboardController extends Controller
                 ];
             });
     }
+    public function getOrders()
+    {
+        return Order::with(['user' => function ($query) {
+            $query->select('_id', 'name', 'email');
+        }])
+            ->latest()
+            ->get()
+            ->map(function ($order) {
+                return [
+                    '_id' => $order->_id,
+                    'total' => $order->total,
+                    'status' => $order->status,
+                    'created_at' => $order->created_at,
+                    'user' => $order->user ? [
+                        'name' => $order->user->name,
+                        'email' => $order->user->email
+                    ] : null
+                ];
+            });
+    }
 }
