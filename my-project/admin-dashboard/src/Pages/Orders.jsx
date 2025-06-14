@@ -114,18 +114,25 @@ export default function Orders() {
   const handleStatusUpdate = (updatedOrder) => {
     setStats((prev) => ({
       ...prev,
-      recentOrders: prev.recentOrders.map((order) =>
-        (order._id || order.id) === (updatedOrder._id || updatedOrder.id)
-          ? updatedOrder
-          : order
-      ),
+      recentOrders: prev.recentOrders.map((order) => {
+        // If this is the order that was updated...
+        if ((order._id || order.id) === (updatedOrder._id || updatedOrder.id)) {
+          // ...return a new object by spreading the OLD order and overwriting the status.
+          // This preserves all other properties like 'items'.
+          return { ...order, status: updatedOrder.status };
+        }
+        // Otherwise, return the original order
+        return order;
+      }),
     }));
 
+    // 2. If the modal is open for this order, update its state as well
     if (
       (selectedOrder?._id || selectedOrder?.id) ===
       (updatedOrder._id || updatedOrder.id)
     ) {
       setSelectedOrder((prev) => ({
+        // Merge the new status into the selectedOrder state too
         ...prev,
         status: updatedOrder.status,
       }));

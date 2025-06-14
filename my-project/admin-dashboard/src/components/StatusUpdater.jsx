@@ -24,46 +24,34 @@ export default function StatusUpdater({ order, onStatusChange }) {
     const newStatus = e.target.value;
     if (newStatus === currentStatus) return;
 
-    setCurrentStatus(newStatus);
     setIsUpdating(true);
-    const originalOrder = { ...order };
-
-    const token =
-      localStorage.getItem("adminToken") ||
-      sessionStorage.getItem("adminToken") ||
-      localStorage.getItem("authToken") ||
-      sessionStorage.getItem("authToken");
-
-    if (!token) {
-      alert("Please login as admin");
-      window.location.href = "/admin/login";
-      return;
-    }
-
     try {
-      const response = await api.put(`/orders/${order._id}/status`, {
-        status: newStatus,
-      });
-
-      if (response.data) {
-        onStatusChange?.(response.data.order || { ...order, status: newStatus });
+       // ===================================================================
+      // THE KEY FIX: Robustly get the order ID
+      // It checks for 'id' (from pagination) OR '_id' (from dashboard).
+      const orderId = order.id || order._id;
+      if (!orderId) {
+        throw new Error("Order ID not found");
       }
-    } catch (error) {
-      console.error("Update failed:", error);
-      setCurrentStatus(originalOrder.status);
-      onStatusChange?.(originalOrder);
-
-      if (error.response?.status === 401) {
-        ["authToken", "adminToken"].forEach((t) => {
-          localStorage.removeItem(t);
-          sessionStorage.removeItem(t);
-        });
-        window.location.href = "/admin/login";
-      } else {
-        alert(
-          `Status update failed: ${error.response?.data?.message || error.message}`
-        );
-      }
+       // ===================================================================
+       const response = await api.put(`orders/${orderId}/status`,{
+        status: newStatus
+       });
+        // The API should return the full, updated order object
+        const updateOrder = response.data.order||response.data;
+        setCurrentStatus(updateOrder.status);
+        // Notify the parent component of the change
+        if (onStatusChange){
+          onStatusChange(updateOrder);
+        }
+    }catch(error){
+      console.error("Status update failed:", error);
+      // Revert the status on the UI if the API call fails
+      setCurrentStatus(order.status); 
+      
+      alert(
+        `Status update failed: ${error.response?.data?.message || error.message}`
+      );
     } finally {
       setIsUpdating(false);
     }

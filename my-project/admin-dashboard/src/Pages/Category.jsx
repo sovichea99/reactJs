@@ -107,7 +107,7 @@ export default function Category() {
         <h2 className="text-2xl font-bold">Categories</h2>
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-500 transition"
         >
           Add New Category
         </button>
@@ -123,13 +123,13 @@ export default function Category() {
             <div className="flex flex-row space-x-2 mt-4 md:mt-0">
               <button
                 onClick={() => handleEdit(category)}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+                className="bg-green-400 text-white px-4 py-2 rounded hover:bg-green-500 transition"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(category.id)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+                className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 transition"
               >
                 Delete
               </button>

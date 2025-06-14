@@ -50,14 +50,14 @@ export default function EditCategoryForm({ category, onUpdate, onCancel }) {
           <div className="flex justify-between">
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-green-400 text-white px-4 py-2 rounded"
             >
               Update
             </button>
             <button
               type="button"
               onClick={onCancel}
-              className="bg-red-500 text-white px-4 py-2 rounded"
+              className="bg-red-400 text-white px-4 py-2 rounded"
             >
               Cancel
             </button>

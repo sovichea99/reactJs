@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import api from "../services/api";
 import StatusUpdater from "../components/StatusUpdater";
-
+import CountUp from "react-countup";
 export default function Dashboard() {
   const [stats, setStats] = useState({
     totalOrders: 0,
@@ -112,7 +112,7 @@ export default function Dashboard() {
             <div>
               <p className="text-gray-500">Total Orders</p>
               <p className="text-2xl font-bold">
-                {stats.totalOrders.toLocaleString()}
+                <CountUp end={stats.totalOrders} duration={2.5} separator="," />
               </p>
             </div>
           </div>
@@ -124,7 +124,11 @@ export default function Dashboard() {
             <div>
               <p className="text-gray-500">Total Products</p>
               <p className="text-2xl font-bold">
-                {stats.totalProducts.toLocaleString()}
+                <CountUp
+                  end={stats.totalProducts}
+                  duration={2.5}
+                  separator=","
+                />
               </p>
             </div>
           </div>
@@ -136,7 +140,11 @@ export default function Dashboard() {
             <div>
               <p className="text-gray-500">Total Customers</p>
               <p className="text-2xl font-bold">
-                {stats.totalCustomers.toLocaleString()}
+                <CountUp
+                  end={stats.totalCustomers}
+                  duration={2.5}
+                  separator=","
+                />
               </p>
             </div>
           </div>
@@ -161,11 +169,13 @@ export default function Dashboard() {
             <div>
               <p className="text-gray-500">Total Revenue</p>
               <p className="text-2xl font-bold">
-                $
-                {stats.totalRevenue.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                <CountUp
+                  end={stats.totalRevenue}
+                  duration={2}
+                  separator=","
+                  prefix="$"
+                  decimals={2}
+                />
               </p>
             </div>
           </div>

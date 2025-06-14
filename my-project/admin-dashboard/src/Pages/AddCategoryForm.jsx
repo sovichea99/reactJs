@@ -41,14 +41,14 @@ export default function AddCategoryForm({ onAdd, onCancel }) {
           <div className="flex justify-between mt-4">
             <button
               type="submit"
-              className="bg-green-500 text-white text-sm px-3 py-1.5 rounded"
+              className="bg-green-400 text-white text-sm px-3 py-1.5 rounded"
             >
               Add Now
             </button>
             <button
               type="button"
               onClick={onCancel}
-              className="bg-red-500 text-white text-sm px-3 py-1.5 rounded"
+              className="bg-red-400 text-white text-sm px-3 py-1.5 rounded"
             >
               Cancel
             </button>

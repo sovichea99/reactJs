@@ -28,7 +28,12 @@ const OrderConfirmationPage = () => {
           setError("No orders found");
         }
       } catch (err) {
-        setError("Failed to fetch order details");
+        if (err.response && err.response.status === 401) {
+          setError("Session expired. Please log in again.");
+          sessionStorage.removeItem("authToken");
+        } else {
+          setError("Failed to fetch order details");
+        }
       } finally {
         setLoading(false);
       }
@@ -116,9 +121,7 @@ const OrderConfirmationPage = () => {
                           {item.name}
                         </p>
                         <p className="text-gray-500">Qty: {item.quantity}</p>
-                        <p className="text-gray-500">
-                          Price: ${item.price}{" "}
-                        </p>
+                        <p className="text-gray-500">Price: ${item.price} </p>
                       </div>
                     </div>
                     <div className="text-right font-semibold text-gray-800 text-sm sm:text-base">
